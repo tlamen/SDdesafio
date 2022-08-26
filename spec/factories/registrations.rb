@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :registration do
-    user { nil }
-    course { nil }
+    user { create(:user) }
+    course { create(:course) }
   end
 end
