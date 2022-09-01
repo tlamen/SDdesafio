@@ -4,7 +4,8 @@ FactoryBot.define do
   factory :course do
     name { "MyString" }
     description { "MyString" }
-    start { "2022-08-25 18:21:43" }
+    start_time { "18:00:00" }
+    week_day { "Monday" }
     duration { 1 }
     category { create(:category) }
     user { create(:user) }
