@@ -193,9 +193,13 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     thor (1.2.1)
+    timeliness (0.4.4)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
+    validates_timeliness (6.0.0.beta2)
+      activemodel (>= 6.0.0, < 7)
+      timeliness (>= 0.3.10, < 1)
     warden (1.2.9)
       rack (>= 2.0.9)
     websocket-driver (0.7.5)
@@ -219,6 +223,7 @@ DEPENDENCIES
   rubocop-rails
   spring
   tzinfo-data
+  validates_timeliness (~> 6.0.0.beta2)
 
 RUBY VERSION
    ruby 2.7.2p137
