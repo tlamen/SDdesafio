@@ -7,7 +7,7 @@ RSpec.describe Category, type: :model do
     end
 
     context 'when name is nil' do
-      it { expect(build(:category, name: '').to be_invalid)}
+      it { expect(build(:category, name: '')).to be_invalid }
     end
 
     context 'when description is nil' do
