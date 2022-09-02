@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Course, type: :model do
-  # let(:category) { create(:category) }
-  # let(:teacher) { create(:user) }
+  let(:category) { create(:category) }
+  let(:teacher) { create(:user) }
 
   describe 'validating course' do
     context 'when using standard factory' do
-      it { expect(build(:course)).to be_valid }
+      it { expect(build(:course, category_id: category.id, user_id: teacher.id)).to be_valid }
     end
 
     context 'when name is nil' do
