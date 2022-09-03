@@ -184,6 +184,10 @@ GEM
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
     ruby-progressbar (1.11.0)
+    simple_token_authentication (1.17.0)
+      actionmailer (>= 3.2.6, < 7)
+      actionpack (>= 3.2.6, < 7)
+      devise (>= 3.2, < 6)
     spring (4.0.0)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -221,6 +225,7 @@ DEPENDENCIES
   rails (~> 6.1.6)
   rspec-rails (~> 5.0, >= 5.0.1)
   rubocop-rails
+  simple_token_authentication
   spring
   tzinfo-data
   validates_timeliness (~> 6.0.0.beta2)

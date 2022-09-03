@@ -45,6 +45,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # Autenticação
 gem 'devise'
+gem 'simple_token_authentication'
 
 # Rubocop (lint)
 gem 'rubocop-rails', require: false
