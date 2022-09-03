@@ -16,9 +16,9 @@ RSpec.describe Category, type: :model do
 
     context 'when name has already been taken' do
       before do
-        create(:category)
+        create(:category, name: "nome")
       end
-      it { expect(build(:category)).to be_invalid }
+      it { expect(build(:category, name: "nome")).to be_invalid }
     end
   end
 

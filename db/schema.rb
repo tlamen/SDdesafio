@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_02_175314) do
+ActiveRecord::Schema.define(version: 2022_09_03_191322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "duration"
+    t.bigint "category_id", null: false
+    t.bigint "user_id", null: false
+    t.string "week_day"
+    t.time "start_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_activities_on_category_id"
+    t.index ["user_id"], name: "index_activities_on_user_id"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -38,10 +52,10 @@ ActiveRecord::Schema.define(version: 2022_09_02_175314) do
 
   create_table "registrations", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "course_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["course_id"], name: "index_registrations_on_course_id"
+    t.bigint "activity_id"
+    t.index ["activity_id"], name: "index_registrations_on_activity_id"
     t.index ["user_id"], name: "index_registrations_on_user_id"
   end
 
@@ -60,8 +74,10 @@ ActiveRecord::Schema.define(version: 2022_09_02_175314) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "activities", "categories"
+  add_foreign_key "activities", "users"
   add_foreign_key "courses", "categories"
   add_foreign_key "courses", "users"
-  add_foreign_key "registrations", "courses"
+  add_foreign_key "registrations", "activities"
   add_foreign_key "registrations", "users"
 end

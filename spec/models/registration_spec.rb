@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Registration, type: :model do
   describe 'validating registration' do
     before { create(:user, id: 0) }
-    before { create(:course, id: 0) }
+    before { create(:activity, id: 0) }
 
     context 'when using standard factory' do
       it { expect(build(:registration)).to be_valid }

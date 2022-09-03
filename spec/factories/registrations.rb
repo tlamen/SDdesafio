@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :registration do
     user { create(:user) }
-    course { create(:course) }
+    activity { create(:activity) }
   end
 end
