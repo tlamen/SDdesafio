@@ -14,7 +14,7 @@ RSpec.describe Registration, type: :model do
     end
 
     context 'when registration is not linked to course' do
-      it { expect(build(:registration, course_id: nil)).to be_invalid }
+      it { expect(build(:registration, activity_id: nil)).to be_invalid }
     end
   end
 end

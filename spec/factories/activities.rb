@@ -5,7 +5,7 @@ FactoryBot.define do
     duration { 1 }
     category { create(:category) }
     user { create(:user) }
-    week_day { "MyString" }
+    week_day { "Monday" }
     start_time { "2022-09-03 16:08:09" }
   end
 end
