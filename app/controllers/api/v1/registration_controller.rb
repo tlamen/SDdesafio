@@ -1,3 +1,9 @@
-class Api::V1::RegistrationController < ApplicationController
-    acts_as_token_authentication_handler_for User
+# frozen_string_literal: true
+
+module Api
+  module V1
+    class RegistrationController < ApplicationController
+      acts_as_token_authentication_handler_for User
+    end
+  end
 end

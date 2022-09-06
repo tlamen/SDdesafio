@@ -7,6 +7,6 @@ FactoryBot.define do
 
   factory :category do
     name { generate(:names) }
-    description { "MyString" }
+    description { 'MyString' }
   end
 end

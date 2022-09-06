@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Activity, type: :model do
@@ -30,19 +32,19 @@ RSpec.describe Activity, type: :model do
     end
 
     context 'when duration is nil' do
-      it { expect(build(:activity, duration: nil)).to be_invalid}
+      it { expect(build(:activity, duration: nil)).to be_invalid }
     end
 
     context 'when duration is negative' do
-      it { expect(build(:activity, duration: -5)).to be_invalid}
+      it { expect(build(:activity, duration: -5)).to be_invalid }
     end
 
     context 'when teacher is nil' do
-      it { expect(build(:activity, user: nil)).to be_invalid}
+      it { expect(build(:activity, user: nil)).to be_invalid }
     end
 
     context 'when category is nil' do
-      it { expect(build(:activity, category: nil)).to be_invalid}
+      it { expect(build(:activity, category: nil)).to be_invalid }
     end
   end
 end

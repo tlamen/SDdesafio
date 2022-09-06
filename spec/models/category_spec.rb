@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Category, type: :model do
@@ -16,9 +18,9 @@ RSpec.describe Category, type: :model do
 
     context 'when name has already been taken' do
       before do
-        create(:category, name: "nome")
+        create(:category, name: 'nome')
       end
-      it { expect(build(:category, name: "nome")).to be_invalid }
+      it { expect(build(:category, name: 'nome')).to be_invalid }
     end
   end
 

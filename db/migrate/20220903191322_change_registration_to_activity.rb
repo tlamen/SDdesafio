@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeRegistrationToActivity < ActiveRecord::Migration[6.1]
   def change
     remove_reference :registrations, :course
