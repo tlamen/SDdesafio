@@ -271,7 +271,10 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
     context 'when user exists' do
       before do
-        delete "/api/v1/users/delete/#{user.id}"
+        delete "/api/v1/users/delete/#{user.id}", headers: {
+          'X-User-Email': usuario.email,
+          'X-User-Token': usuario.authentication_token
+        }
       end
 
       it 'should return ok status' do
@@ -286,11 +289,25 @@ RSpec.describe 'Api::V1::Users', type: :request do
     context 'when user does not exists' do
       before do
         user.destroy!
-        delete "/api/v1/users/delete/#{user.id}"
+        delete "/api/v1/users/delete/#{user.id}", headers: {
+          'X-User-Email': usuario.email,
+          'X-User-Token': usuario.authentication_token
+        }
       end
 
       it 'should return not_found status' do
         expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'when user is not logged' do
+      before do
+        user.destroy!
+        delete "/api/v1/users/delete/#{user.id}"
+      end
+
+      it 'should return unauthorized status' do
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
