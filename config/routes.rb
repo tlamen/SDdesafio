@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   namespace 'api' do
     namespace 'v1' do
       scope 'users' do
-        post '/login', to: 'users#index'
+        post '/login', to: 'users#login'
       end
     end
   end
