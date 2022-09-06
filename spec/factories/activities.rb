@@ -8,6 +8,6 @@ FactoryBot.define do
     category { create(:category) }
     user { create(:user) }
     week_day { 'Monday' }
-    start_time { '2022-09-03 16:08:09' }
+    start_time { '16:08:09' }
   end
 end
