@@ -1,4 +1,6 @@
 class Api::V1::UsersController < ApplicationController
+    acts_as_token_authentication_handler_for User, only: [:logout]
+
     def login
         user = User.find_by!(email: params[:email])
         if user.valid_password?(params[:password])
@@ -9,5 +11,13 @@ class Api::V1::UsersController < ApplicationController
         end
     rescue StandardError => e
         render json: { message: e.message }, status: :not_found
-    end 
+    end
+
+    def logout
+        current_user.authentication_token = nil
+        current_user.save!
+        head(:ok)
+    rescue StandardError => e
+        render json: { message: e.message }, status: :bad_request
+    end
 end

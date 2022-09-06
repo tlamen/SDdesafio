@@ -57,10 +57,6 @@ RSpec.describe "Api::V1::Users", type: :request do
         usuario.reload
       end
 
-      it 'should redirect to authentication_failure route' do
-        expect(response).to redirect_to api_v1_authentication_failure_path
-      end
-
       it 'should not change user authentication token' do
         expect(usuario.authentication_token).to eq(antigo_token)
       end

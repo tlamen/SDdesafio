@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     namespace 'v1' do
       scope 'users' do
         post '/login', to: 'users#login'
+        post '/logout', to: 'users#logout'
       end
     end
   end
