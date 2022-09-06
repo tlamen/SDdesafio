@@ -170,7 +170,8 @@ RSpec.describe 'Api::V1::Users', type: :request do
       create(:user, email: 'email2@mail.com')
       get '/api/v1/users/index'
     end
-    it 'should returns http ok' do
+
+    it 'should return ok status' do
       expect(response).to have_http_status(:ok)
     end
 
@@ -184,7 +185,10 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
     context 'when user exists' do
       before { get "/api/v1/users/show/#{user.id}" }
-      it { expect(response).to have_http_status(:ok) }
+      
+      it 'should have ok status' do
+        expect(response).to have_http_status(:ok)
+      end
     end
 
     context 'when user does not exists' do
@@ -192,7 +196,10 @@ RSpec.describe 'Api::V1::Users', type: :request do
         user.destroy!
         get "/api/v1/users/show/#{usuario.id}"
       end
-      it { expect(response).to have_http_status(:not_found) }
+
+      it 'should have not_found status' do 
+        expect(response).to have_http_status(:not_found)
+      end
     end
   end
 
@@ -302,7 +309,6 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
     context 'when user is not logged' do
       before do
-        user.destroy!
         delete "/api/v1/users/delete/#{user.id}"
       end
 
