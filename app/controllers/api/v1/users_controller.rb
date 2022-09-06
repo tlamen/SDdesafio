@@ -3,9 +3,9 @@ class Api::V1::UsersController < ApplicationController
         user = User.find_by!(email: params[:email])
         if user.valid_password?(params[:password])
             user.update! authentication_token: nil # Metodo para corrigir erro com token de autenticacao
-            render json: user
+            render json: user, status: :ok
         else
-            head status: :unauthorized
+            head(:unauthorized)
         end
     rescue StandardError => e
         render json: { message: e.message }, status: :not_found
