@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Api::V1::Registration', type: :request do
   let(:client) { create(:user) }
+  let(:client_2) { create(:user) }
   let(:activity_1) { create(:activity) }
   let(:activity_2) { create(:activity) }
   
@@ -83,6 +84,36 @@ RSpec.describe 'Api::V1::Registration', type: :request do
 
       it 'should return bad_request status' do
         expect(response).to have_http_status(:bad_request)
+      end
+    end
+  end
+
+  describe 'GET /user_registrations' do
+    before do
+      create(:registration, user_id: client.id, activity_id: activity_1.id)
+      create(:registration, user_id: client.id, activity_id: activity_2.id)
+      create(:registration, user_id: client_2.id, activity_id: activity_1.id)
+    end
+
+    context 'user exists' do
+      before { get "/api/v1/registrations/user_registrations/#{client.id}" }
+
+      it 'should return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+  
+      it 'should return 2 registrations' do
+        expect(JSON.parse(response.body).size).to eq(2)
+      end
+    end
+
+    context 'user does not exists' do
+      before do
+        get "/api/v1/registrations/user_registrations/0"
+      end
+
+      it 'should return 0 registrations' do
+        expect(JSON.parse(response.body).size).to eq(0)
       end
     end
   end

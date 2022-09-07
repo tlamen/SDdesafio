@@ -10,6 +10,13 @@ module Api
         render json: { message: e.message }, status: :bad_request
       end
 
+      def user_registrations
+        registrations = Registration.where(user_id: params[:id])
+        render json: registrations, status: :ok
+      rescue StandardError => e
+        render json: { message: e.message }, status: :not_found
+      end
+
       def create
         registration = Registration.create!(registration_params)
         render json: registration, status: :created

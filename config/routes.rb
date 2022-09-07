@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
       scope 'registrations' do
         get '/index', to: 'registration#index'
+        get '/user_registrations/:id', to: 'registration#user_registrations'
         post '/create', to: 'registration#create'
         delete '/delete/:id', to: 'registration#delete'
       end
