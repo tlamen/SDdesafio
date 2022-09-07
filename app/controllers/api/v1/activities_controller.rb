@@ -20,7 +20,7 @@ module Api
       end
 
       def create
-        if currrent_user.role != 3
+        if current_user.role != 3
           activity = Activity.create!(activity_params)
           render json: activity, status: :created          
         else
@@ -31,11 +31,28 @@ module Api
       end
 
       def update
-        
+        if current_user.role != 3
+          activity = Activity.find(params[:id])
+          activity.update!(activity_params)
+          activity.save!
+          render json: activity, status: :ok          
+        else
+          render json: { message: "unauthorized" }, status: :unauthorized
+        end
+      rescue StandardError => e
+        render json: { message: e.message }, status: :unprocessable_entity
       end
       
       def delete
-        
+        if current_user.role != 3
+          activity = Activity.find(params[:id])
+          activity.destroy!
+          render json: activity, status: :ok          
+        else
+          render json: { message: "unauthorized" }, status: :unauthorized
+        end
+      rescue StandardError => e
+        render json: { message: e.message }, status: :bad_request
       end
 
       private

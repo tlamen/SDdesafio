@@ -141,8 +141,8 @@ RSpec.describe 'Api::V1::Activities', type: :request do
         post "/api/v1/activities/create", params: { activity: valid_params }
       end
 
-      it 'should return unauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
       end
 
       it 'should not have saved the activity' do
@@ -224,11 +224,10 @@ RSpec.describe 'Api::V1::Activities', type: :request do
           'X-User-Email': teacher.email,
           'X-User-Token': teacher.authentication_token
         }
-        activity.reload
       end
 
-      it 'should return not_found status' do
-        expect(response).to have_http_status(:not_found)
+      it 'should return unprocessable_entity status' do
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 
@@ -243,8 +242,8 @@ RSpec.describe 'Api::V1::Activities', type: :request do
         activity.reload
       end
 
-      it 'should return bad_request status' do
-        expect(response).to have_http_status(:bad_request)
+      it 'should return unprocessable_entity status' do
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'should not update activity' do
@@ -260,8 +259,8 @@ RSpec.describe 'Api::V1::Activities', type: :request do
         activity.reload
       end
 
-      it 'should return unauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
       end
 
       it 'should not update activity' do
@@ -332,8 +331,8 @@ RSpec.describe 'Api::V1::Activities', type: :request do
         }
       end
   
-      it 'should return not_found status' do
-        expect(response).to have_http_status(:not_found)
+      it 'should return bad_request status' do
+        expect(response).to have_http_status(:bad_request)
       end
     end
   
@@ -342,8 +341,8 @@ RSpec.describe 'Api::V1::Activities', type: :request do
         delete "/api/v1/activities/delete/#{activity.id}"
       end
   
-      it 'should return unauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
       end
   
       it 'should not delete activity' do

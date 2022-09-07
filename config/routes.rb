@@ -28,6 +28,8 @@ Rails.application.routes.draw do
         get '/index', to: 'activities#index'
         get '/show/:id', to: 'activities#show'
         post '/create', to: 'activities#create'
+        put '/update/:id', to: 'activities#update'
+        delete '/delete/:id', to: 'activities#delete'
       end
     end
   end
