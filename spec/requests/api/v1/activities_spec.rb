@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::Activities', type: :request do
     let(:activity) { create(:activity) }
     
     context 'when activity exists' do
-      before { get "/api/v1/activity/show/#{activity.id}" }
+      before { get "/api/v1/activities/show/#{activity.id}" }
       
       it 'should have ok status' do
         expect(response).to have_http_status(:ok)
@@ -289,66 +289,68 @@ RSpec.describe 'Api::V1::Activities', type: :request do
         expect(Activity.find_by(id: activity.id)).to_not be_nil 
       end
     end
+
+    context 'when teacher tries to delete' do
+      before do
+        delete "/api/v1/activities/delete/#{activity.id}", headers: {
+          'X-User-Email': teacher.email,
+          'X-User-Token': teacher.authentication_token
+        }
+      end
+  
+      it 'should return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+  
+      it 'should delete activity' do
+        expect(Activity.find_by(id: activity.id)).to be_nil 
+      end
+    end
+  
+    context 'when admin tries to delete' do
+      before do
+        delete "/api/v1/activities/delete/#{activity.id}", headers: {
+          'X-User-Email': admin.email,
+          'X-User-Token': admin.authentication_token
+        }
+      end
+  
+      it 'should return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+  
+      it 'should delete activity' do
+        expect(Activity.find_by(id: activity.id)).to be_nil 
+      end
+    end
+    context 'when activity does not exists' do
+      before do
+        activity.destroy!
+        delete "/api/v1/activities/delete/#{activity.id}", headers: {
+          'X-User-Email': teacher.email,
+          'X-User-Token': teacher.authentication_token
+        }
+      end
+  
+      it 'should return not_found status' do
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  
+    context 'when user is not logged' do
+      before do
+        delete "/api/v1/activities/delete/#{activity.id}"
+      end
+  
+      it 'should return unauthorized status' do
+        expect(response).to have_http_status(:unauthorized)
+      end
+  
+      it 'should not delete activity' do
+        expect(Activity.find_by(id: activity.id)).to_not be_nil 
+      end
+    end
   end
 
-  context 'when teacher tries to delete' do
-    before do
-      delete "/api/v1/activities/delete/#{activity.id}", headers: {
-        'X-User-Email': teacher.email,
-        'X-User-Token': teacher.authentication_token
-      }
-    end
-
-    it 'should return ok status' do
-      expect(response).to have_http_status(:ok)
-    end
-
-    it 'should delete activity' do
-      expect(Activity.find_by(id: activity.id)).to be_nil 
-    end
-  end
-
-  context 'when admin tries to delete' do
-    before do
-      delete "/api/v1/activities/delete/#{activity.id}", headers: {
-        'X-User-Email': admin.email,
-        'X-User-Token': admin.authentication_token
-      }
-    end
-
-    it 'should return ok status' do
-      expect(response).to have_http_status(:ok)
-    end
-
-    it 'should delete activity' do
-      expect(Activity.find_by(id: activity.id)).to be_nil 
-    end
-  end
-  context 'when activity does not exists' do
-    before do
-      activity.destroy!
-      delete "/api/v1/activities/delete/#{activity.id}", headers: {
-        'X-User-Email': teacher.email,
-        'X-User-Token': teacher.authentication_token
-      }
-    end
-
-    it 'should return not_found status' do
-      expect(response).to have_http_status(:not_found)
-    end
-  end
-
-  context 'when user is not logged' do
-    before do
-      delete "/api/v1/activities/delete/#{activity.id}"
-    end
-
-    it 'should return unauthorized status' do
-      expect(response).to have_http_status(:unauthorized)
-    end
-
-    it 'should not delete activity' do
-      expect(Activity.find_by(id: activity.id)).to_not be_nil 
-    end
-  end
+  
 end
