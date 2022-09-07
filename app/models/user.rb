@@ -10,6 +10,6 @@ class User < ApplicationRecord
 
   validates_presence_of :name, :email, :birthdate, :role
   validates_date :birthdate, before: -> { Date.current }
-  has_many :courses, dependent: :destroy
+  has_many :activities, dependent: :destroy
   validates :role, acceptance: { accept: [1, 2, 3] }
 end

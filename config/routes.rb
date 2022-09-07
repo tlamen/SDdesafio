@@ -9,6 +9,10 @@ Rails.application.routes.draw do
       scope 'users' do
         post '/login', to: 'users#login'
         post '/logout', to: 'users#logout'
+        get '/index', to: 'users#index'
+        get '/show/:id', to: 'users#show'
+        post '/register', to: 'users#register'
+        put '/update/:id', to: 'users#update'
       end
     end
   end

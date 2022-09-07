@@ -122,12 +122,12 @@ RSpec.describe 'Api::V1::Users', type: :request do
       end
 
       it 'should have saved the user' do
-        new_user = User.find_by(email: 'test_client@mail.com')
+        new_user = User.find_by(email: 'test_teacher@mail.com')
         expect(new_user).to_not be_nil
       end
 
       it 'should have teacher role' do
-        new_user = User.find_by(email: 'test_client@mail.com')
+        new_user = User.find_by(email: 'test_teacher@mail.com')
         expect(new_user.role).to eq(2)
       end
     end
@@ -140,18 +140,18 @@ RSpec.describe 'Api::V1::Users', type: :request do
       end
 
       it 'should have saved the user' do
-        new_user = User.find_by(email: 'test_client@mail.com')
+        new_user = User.find_by(email: 'test_admin@mail.com')
         expect(new_user).to_not be_nil
       end
 
       it 'should have admin role' do
-        new_user = User.find_by(email: 'test_client@mail.com')
+        new_user = User.find_by(email: 'test_admin@mail.com')
         expect(new_user.role).to eq(1)
       end
     end
 
     context 'when params are not valid' do
-      before { post '/api/v1/users/register/user', params: { user: { name: 'invalid', email: 'invalid@mail.com'} } }
+      before { post '/api/v1/users/register', params: { user: { name: 'invalid', email: 'invalid@mail.com'} } }
       
       it 'should return unprocessable entity status' do
         expect(response).to have_http_status(:unprocessable_entity)
@@ -194,7 +194,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
     context 'when user does not exists' do
       before do
         user.destroy!
-        get "/api/v1/users/show/#{usuario.id}"
+        get "/api/v1/users/show/#{user.id}"
       end
 
       it 'should have not_found status' do 
@@ -231,15 +231,11 @@ RSpec.describe 'Api::V1::Users', type: :request do
         user.destroy!
         put "/api/v1/users/update/#{user.id}", params: {
           user: { name: 'new name' }
-        }, headers: {
-          'X-User-Email': user.email,
-          'X-User-Token': user.authentication_token
         }
-        user.reload
       end
 
-      it 'should return not_found status' do
-        expect(response).to have_http_status(:not_found)
+      it 'should return bad_request status' do
+        expect(response).to have_http_status(:bad_request)
       end
     end
 
