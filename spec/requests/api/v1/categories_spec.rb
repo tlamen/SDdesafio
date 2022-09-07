@@ -56,7 +56,7 @@ RSpec.describe 'Api::V1::Categories', type: :request do
 
     context 'when client uses valid params' do
       before do
-        post "/api/v1/categories/create", params: { category: valid_params },
+        post "/api/v1/categories/create", params: { category: { name: 'client category', description: 'created for tests' } },
         headers: {
           'X-User-Email': client.email,
           'X-User-Token': client.authentication_token
@@ -68,7 +68,7 @@ RSpec.describe 'Api::V1::Categories', type: :request do
       end
 
       it 'should not have saved the category' do
-        new_category = Category.find_by(name: 'new category')
+        new_category = Category.find_by(name: 'client category')
         expect(new_category).to be_nil
       end
     end
@@ -135,8 +135,8 @@ RSpec.describe 'Api::V1::Categories', type: :request do
         post "/api/v1/categories/create", params: { category: valid_params }
       end
 
-      it 'should return unauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
       end
 
       it 'should not have saved the category' do
@@ -218,11 +218,10 @@ RSpec.describe 'Api::V1::Categories', type: :request do
           'X-User-Email': teacher.email,
           'X-User-Token': teacher.authentication_token
         }
-        category.reload
       end
 
-      it 'should return not_found status' do
-        expect(response).to have_http_status(:not_found)
+      it 'should return bad_request status' do
+        expect(response).to have_http_status(:bad_request)
       end
     end
 
@@ -254,8 +253,8 @@ RSpec.describe 'Api::V1::Categories', type: :request do
         category.reload
       end
 
-      it 'should return unauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
       end
 
       it 'should not update category' do
@@ -283,66 +282,68 @@ RSpec.describe 'Api::V1::Categories', type: :request do
         expect(Category.find_by(id: category.id)).to_not be_nil 
       end
     end
+
+    context 'when teacher tries to delete' do
+      before do
+        delete "/api/v1/categories/delete/#{category.id}", headers: {
+          'X-User-Email': teacher.email,
+          'X-User-Token': teacher.authentication_token
+        }
+      end
+  
+      it 'should return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+  
+      it 'should delete category' do
+        expect(Category.find_by(id: category.id)).to be_nil 
+      end
+    end
+  
+    context 'when admin tries to delete' do
+      before do
+        delete "/api/v1/categories/delete/#{category.id}", headers: {
+          'X-User-Email': admin.email,
+          'X-User-Token': admin.authentication_token
+        }
+      end
+  
+      it 'should return ok status' do
+        expect(response).to have_http_status(:ok)
+      end
+  
+      it 'should delete category' do
+        expect(Category.find_by(id: category.id)).to be_nil 
+      end
+    end
+    context 'when category does not exists' do
+      before do
+        category.destroy!
+        delete "/api/v1/categories/delete/#{category.id}", headers: {
+          'X-User-Email': teacher.email,
+          'X-User-Token': teacher.authentication_token
+        }
+      end
+  
+      it 'should return bad_request status' do
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+  
+    context 'when user is not logged' do
+      before do
+        delete "/api/v1/categories/delete/#{category.id}"
+      end
+  
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
+      end
+  
+      it 'should not delete category' do
+        expect(Category.find_by(id: category.id)).to_not be_nil 
+      end
+    end
   end
 
-  context 'when teacher tries to delete' do
-    before do
-      delete "/api/v1/categories/delete/#{category.id}", headers: {
-        'X-User-Email': teacher.email,
-        'X-User-Token': teacher.authentication_token
-      }
-    end
-
-    it 'should return ok status' do
-      expect(response).to have_http_status(:ok)
-    end
-
-    it 'should delete category' do
-      expect(Category.find_by(id: category.id)).to be_nil 
-    end
-  end
-
-  context 'when admin tries to delete' do
-    before do
-      delete "/api/v1/categories/delete/#{category.id}", headers: {
-        'X-User-Email': admin.email,
-        'X-User-Token': admin.authentication_token
-      }
-    end
-
-    it 'should return ok status' do
-      expect(response).to have_http_status(:ok)
-    end
-
-    it 'should delete category' do
-      expect(Category.find_by(id: category.id)).to be_nil 
-    end
-  end
-  context 'when category does not exists' do
-    before do
-      category.destroy!
-      delete "/api/v1/categories/delete/#{category.id}", headers: {
-        'X-User-Email': teacher.email,
-        'X-User-Token': teacher.authentication_token
-      }
-    end
-
-    it 'should return not_found status' do
-      expect(response).to have_http_status(:not_found)
-    end
-  end
-
-  context 'when user is not logged' do
-    before do
-      delete "/api/v1/categories/delete/#{category.id}"
-    end
-
-    it 'should return unauthorized status' do
-      expect(response).to have_http_status(:unauthorized)
-    end
-
-    it 'should not delete category' do
-      expect(Category.find_by(id: category.id)).to_not be_nil 
-    end
-  end
+  
 end
