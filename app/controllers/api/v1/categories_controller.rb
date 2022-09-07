@@ -4,7 +4,7 @@ module Api
   module V1
     class CategoriesController < ApplicationController
       acts_as_token_authentication_handler_for User, only: %i[create update delete]
-      
+
       def index
         categories = Category.all
         render json: categories, status: :ok
@@ -24,7 +24,7 @@ module Api
           category = Category.create!(category_params)
           render json: category, status: :created
         else
-          render json: { message: "unauthorized"}, status: :unauthorized
+          render json: { message: 'unauthorized' }, status: :unauthorized
         end
       rescue StandardError => e
         render json: { message: e.message }, status: :unprocessable_entity
@@ -37,7 +37,7 @@ module Api
           category.save!
           render json: category, status: :ok
         else
-          render json: { message: "unauthorized"}, status: :unauthorized
+          render json: { message: 'unauthorized' }, status: :unauthorized
         end
       rescue StandardError => e
         render json: { message: e.message }, status: :bad_request
@@ -49,7 +49,7 @@ module Api
           category.destroy!
           render json: category, status: :ok
         else
-          render json: { message: "unauthorized"}, status: :unauthorized
+          render json: { message: 'unauthorized' }, status: :unauthorized
         end
       rescue StandardError => e
         render json: { message: e.message }, status: :bad_request

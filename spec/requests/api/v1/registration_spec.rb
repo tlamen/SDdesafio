@@ -7,7 +7,7 @@ RSpec.describe 'Api::V1::Registration', type: :request do
   let(:client_2) { create(:user) }
   let(:activity_1) { create(:activity) }
   let(:activity_2) { create(:activity) }
-  
+
   describe 'GET /index' do
     before do
       create(:registration, user_id: client.id, activity_id: activity_1.id)
@@ -32,7 +32,7 @@ RSpec.describe 'Api::V1::Registration', type: :request do
           activity_id: activity_1.id
         }
       end
-      
+
       before { post '/api/v1/registrations/create', params: { registration: valid_params } }
 
       it 'should return created status' do
@@ -41,20 +41,20 @@ RSpec.describe 'Api::V1::Registration', type: :request do
 
       it 'should create a new registration' do
         new_registration = Registration.find_by(user_id: client.id)
-        expect(new_registration).to_not be_nil 
+        expect(new_registration).to_not be_nil
       end
     end
 
     context 'when params are not valid' do
-      before { post '/api/v1/registrations/create', params: { registration: {user_id: client.id, activity_id: nil} } }
+      before { post '/api/v1/registrations/create', params: { registration: { user_id: client.id, activity_id: nil } } }
 
       it 'should return bad_request status' do
         expect(response).to have_http_status(:bad_request)
-      end 
+      end
 
       it 'should not create a new registration' do
         new_registration = Registration.find_by(user_id: client.id)
-        expect(new_registration).to be_nil 
+        expect(new_registration).to be_nil
       end
     end
   end
@@ -67,7 +67,6 @@ RSpec.describe 'Api::V1::Registration', type: :request do
 
       it 'should return ok status' do
         expect(response).to have_http_status(:ok)
-  
       end
 
       it 'should delete the registration' do
@@ -80,7 +79,7 @@ RSpec.describe 'Api::V1::Registration', type: :request do
       before do
         registration.destroy!
         delete "/api/v1/registrations/delete/#{registration.id}"
-      end 
+      end
 
       it 'should return bad_request status' do
         expect(response).to have_http_status(:bad_request)
@@ -101,7 +100,7 @@ RSpec.describe 'Api::V1::Registration', type: :request do
       it 'should return ok status' do
         expect(response).to have_http_status(:ok)
       end
-  
+
       it 'should return 2 registrations' do
         expect(JSON.parse(response.body).size).to eq(2)
       end
@@ -109,7 +108,7 @@ RSpec.describe 'Api::V1::Registration', type: :request do
 
     context 'user does not exists' do
       before do
-        get "/api/v1/registrations/user_registrations/0"
+        get '/api/v1/registrations/user_registrations/0'
       end
 
       it 'should return 0 registrations' do

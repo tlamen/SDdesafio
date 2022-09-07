@@ -25,10 +25,10 @@ RSpec.describe 'Api::V1::Categories', type: :request do
 
   describe 'GET /show' do
     let(:category) { create(:category) }
-    
+
     context 'when category exists' do
       before { get "/api/v1/categories/show/#{category.id}" }
-      
+
       it 'should have ok status' do
         expect(response).to have_http_status(:ok)
       end
@@ -56,11 +56,11 @@ RSpec.describe 'Api::V1::Categories', type: :request do
 
     context 'when client uses valid params' do
       before do
-        post "/api/v1/categories/create", params: { category: { name: 'client category', description: 'created for tests' } },
-        headers: {
-          'X-User-Email': client.email,
-          'X-User-Token': client.authentication_token
-        }
+        post '/api/v1/categories/create', params: { category: { name: 'client category', description: 'created for tests' } },
+                                          headers: {
+                                            'X-User-Email': client.email,
+                                            'X-User-Token': client.authentication_token
+                                          }
       end
 
       it 'should return unauthorized status' do
@@ -75,11 +75,11 @@ RSpec.describe 'Api::V1::Categories', type: :request do
 
     context 'when teacher uses valid params' do
       before do
-        post "/api/v1/categories/create", params: { category: valid_params },
-        headers: {
-          'X-User-Email': teacher.email,
-          'X-User-Token': teacher.authentication_token
-        }
+        post '/api/v1/categories/create', params: { category: valid_params },
+                                          headers: {
+                                            'X-User-Email': teacher.email,
+                                            'X-User-Token': teacher.authentication_token
+                                          }
       end
 
       it 'should return created status' do
@@ -94,11 +94,11 @@ RSpec.describe 'Api::V1::Categories', type: :request do
 
     context 'when admin uses valid params' do
       before do
-        post "/api/v1/categories/create", params: { category: valid_params },
-        headers: {
-          'X-User-Email': admin.email,
-          'X-User-Token': admin.authentication_token
-        }
+        post '/api/v1/categories/create', params: { category: valid_params },
+                                          headers: {
+                                            'X-User-Email': admin.email,
+                                            'X-User-Token': admin.authentication_token
+                                          }
       end
 
       it 'should return created status' do
@@ -113,11 +113,11 @@ RSpec.describe 'Api::V1::Categories', type: :request do
 
     context 'when params are not valid' do
       before do
-        post "/api/v1/categories/create", params: { category: { name: 'no description', description: nil } },
-        headers: {
-          'X-User-Email': admin.email,
-          'X-User-Token': admin.authentication_token
-        }
+        post '/api/v1/categories/create', params: { category: { name: 'no description', description: nil } },
+                                          headers: {
+                                            'X-User-Email': admin.email,
+                                            'X-User-Token': admin.authentication_token
+                                          }
       end
 
       it 'should return unprocessable_entity status' do
@@ -132,7 +132,7 @@ RSpec.describe 'Api::V1::Categories', type: :request do
 
     context 'when user is not logged' do
       before do
-        post "/api/v1/categories/create", params: { category: valid_params }
+        post '/api/v1/categories/create', params: { category: valid_params }
       end
 
       it 'should return found status' do
@@ -279,7 +279,7 @@ RSpec.describe 'Api::V1::Categories', type: :request do
       end
 
       it 'should not delete category' do
-        expect(Category.find_by(id: category.id)).to_not be_nil 
+        expect(Category.find_by(id: category.id)).to_not be_nil
       end
     end
 
@@ -290,16 +290,16 @@ RSpec.describe 'Api::V1::Categories', type: :request do
           'X-User-Token': teacher.authentication_token
         }
       end
-  
+
       it 'should return ok status' do
         expect(response).to have_http_status(:ok)
       end
-  
+
       it 'should delete category' do
-        expect(Category.find_by(id: category.id)).to be_nil 
+        expect(Category.find_by(id: category.id)).to be_nil
       end
     end
-  
+
     context 'when admin tries to delete' do
       before do
         delete "/api/v1/categories/delete/#{category.id}", headers: {
@@ -307,13 +307,13 @@ RSpec.describe 'Api::V1::Categories', type: :request do
           'X-User-Token': admin.authentication_token
         }
       end
-  
+
       it 'should return ok status' do
         expect(response).to have_http_status(:ok)
       end
-  
+
       it 'should delete category' do
-        expect(Category.find_by(id: category.id)).to be_nil 
+        expect(Category.find_by(id: category.id)).to be_nil
       end
     end
     context 'when category does not exists' do
@@ -324,26 +324,24 @@ RSpec.describe 'Api::V1::Categories', type: :request do
           'X-User-Token': teacher.authentication_token
         }
       end
-  
+
       it 'should return bad_request status' do
         expect(response).to have_http_status(:bad_request)
       end
     end
-  
+
     context 'when user is not logged' do
       before do
         delete "/api/v1/categories/delete/#{category.id}"
       end
-  
+
       it 'should return found status' do
         expect(response).to have_http_status(:found)
       end
-  
+
       it 'should not delete category' do
-        expect(Category.find_by(id: category.id)).to_not be_nil 
+        expect(Category.find_by(id: category.id)).to_not be_nil
       end
     end
   end
-
-  
 end

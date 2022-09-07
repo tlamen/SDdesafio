@@ -39,7 +39,7 @@ module Api
           :user_id,
           :activity_id
         )
-      end 
+      end
     end
   end
 end

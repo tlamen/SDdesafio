@@ -151,11 +151,11 @@ RSpec.describe 'Api::V1::Users', type: :request do
     end
 
     context 'when params are not valid' do
-      before { post '/api/v1/users/register', params: { user: { name: 'invalid', email: 'invalid@mail.com'} } }
-      
+      before { post '/api/v1/users/register', params: { user: { name: 'invalid', email: 'invalid@mail.com' } } }
+
       it 'should return unprocessable entity status' do
         expect(response).to have_http_status(:unprocessable_entity)
-      end 
+      end
 
       it 'should not have saved the user' do
         new_user = User.find_by(email: 'invalid@mail.com')
@@ -185,7 +185,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
     context 'when user exists' do
       before { get "/api/v1/users/show/#{user.id}" }
-      
+
       it 'should have ok status' do
         expect(response).to have_http_status(:ok)
       end
@@ -197,14 +197,14 @@ RSpec.describe 'Api::V1::Users', type: :request do
         get "/api/v1/users/show/#{user.id}"
       end
 
-      it 'should have not_found status' do 
+      it 'should have not_found status' do
         expect(response).to have_http_status(:not_found)
       end
     end
   end
 
   describe 'PUT /update' do
-    let(:user) { create(:user, name: "old name") }
+    let(:user) { create(:user, name: 'old name') }
 
     context 'when user exists and params are valid' do
       before do

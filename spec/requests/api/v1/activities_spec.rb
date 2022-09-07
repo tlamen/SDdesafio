@@ -25,10 +25,10 @@ RSpec.describe 'Api::V1::Activities', type: :request do
 
   describe 'GET /show' do
     let(:activity) { create(:activity) }
-    
+
     context 'when activity exists' do
       before { get "/api/v1/activities/show/#{activity.id}" }
-      
+
       it 'should have ok status' do
         expect(response).to have_http_status(:ok)
       end
@@ -55,18 +55,18 @@ RSpec.describe 'Api::V1::Activities', type: :request do
         duration: 10,
         category_id: category.id,
         user_id: teacher.id,
-        week_day: "Tuesday",
-        start_time: "15:00:00"
+        week_day: 'Tuesday',
+        start_time: '15:00:00'
       }
     end
 
     context 'when client uses valid params' do
       before do
-        post "/api/v1/activities/create", params: { activity: valid_params },
-        headers: {
-          'X-User-Email': client.email,
-          'X-User-Token': client.authentication_token
-        }
+        post '/api/v1/activities/create', params: { activity: valid_params },
+                                          headers: {
+                                            'X-User-Email': client.email,
+                                            'X-User-Token': client.authentication_token
+                                          }
       end
 
       it 'should return unauthorized status' do
@@ -81,11 +81,11 @@ RSpec.describe 'Api::V1::Activities', type: :request do
 
     context 'when teacher uses valid params' do
       before do
-        post "/api/v1/activities/create", params: { activity: valid_params },
-        headers: {
-          'X-User-Email': teacher.email,
-          'X-User-Token': teacher.authentication_token
-        }
+        post '/api/v1/activities/create', params: { activity: valid_params },
+                                          headers: {
+                                            'X-User-Email': teacher.email,
+                                            'X-User-Token': teacher.authentication_token
+                                          }
       end
 
       it 'should return created status' do
@@ -100,11 +100,11 @@ RSpec.describe 'Api::V1::Activities', type: :request do
 
     context 'when admin uses valid params' do
       before do
-        post "/api/v1/activities/create", params: { activity: valid_params },
-        headers: {
-          'X-User-Email': admin.email,
-          'X-User-Token': admin.authentication_token
-        }
+        post '/api/v1/activities/create', params: { activity: valid_params },
+                                          headers: {
+                                            'X-User-Email': admin.email,
+                                            'X-User-Token': admin.authentication_token
+                                          }
       end
 
       it 'should return created status' do
@@ -119,11 +119,11 @@ RSpec.describe 'Api::V1::Activities', type: :request do
 
     context 'when params are not valid' do
       before do
-        post "/api/v1/activities/create", params: { activity: { name: 'no description', description: nil } },
-        headers: {
-          'X-User-Email': admin.email,
-          'X-User-Token': admin.authentication_token
-        }
+        post '/api/v1/activities/create', params: { activity: { name: 'no description', description: nil } },
+                                          headers: {
+                                            'X-User-Email': admin.email,
+                                            'X-User-Token': admin.authentication_token
+                                          }
       end
 
       it 'should return unprocessable_entity status' do
@@ -138,7 +138,7 @@ RSpec.describe 'Api::V1::Activities', type: :request do
 
     context 'when user is not logged' do
       before do
-        post "/api/v1/activities/create", params: { activity: valid_params }
+        post '/api/v1/activities/create', params: { activity: valid_params }
       end
 
       it 'should return found status' do
@@ -285,7 +285,7 @@ RSpec.describe 'Api::V1::Activities', type: :request do
       end
 
       it 'should not delete activity' do
-        expect(Activity.find_by(id: activity.id)).to_not be_nil 
+        expect(Activity.find_by(id: activity.id)).to_not be_nil
       end
     end
 
@@ -296,16 +296,16 @@ RSpec.describe 'Api::V1::Activities', type: :request do
           'X-User-Token': teacher.authentication_token
         }
       end
-  
+
       it 'should return ok status' do
         expect(response).to have_http_status(:ok)
       end
-  
+
       it 'should delete activity' do
-        expect(Activity.find_by(id: activity.id)).to be_nil 
+        expect(Activity.find_by(id: activity.id)).to be_nil
       end
     end
-  
+
     context 'when admin tries to delete' do
       before do
         delete "/api/v1/activities/delete/#{activity.id}", headers: {
@@ -313,13 +313,13 @@ RSpec.describe 'Api::V1::Activities', type: :request do
           'X-User-Token': admin.authentication_token
         }
       end
-  
+
       it 'should return ok status' do
         expect(response).to have_http_status(:ok)
       end
-  
+
       it 'should delete activity' do
-        expect(Activity.find_by(id: activity.id)).to be_nil 
+        expect(Activity.find_by(id: activity.id)).to be_nil
       end
     end
     context 'when activity does not exists' do
@@ -330,26 +330,24 @@ RSpec.describe 'Api::V1::Activities', type: :request do
           'X-User-Token': teacher.authentication_token
         }
       end
-  
+
       it 'should return bad_request status' do
         expect(response).to have_http_status(:bad_request)
       end
     end
-  
+
     context 'when user is not logged' do
       before do
         delete "/api/v1/activities/delete/#{activity.id}"
       end
-  
+
       it 'should return found status' do
         expect(response).to have_http_status(:found)
       end
-  
+
       it 'should not delete activity' do
-        expect(Activity.find_by(id: activity.id)).to_not be_nil 
+        expect(Activity.find_by(id: activity.id)).to_not be_nil
       end
     end
   end
-
-  
 end

@@ -22,9 +22,9 @@ module Api
       def create
         if current_user.role != 3
           activity = Activity.create!(activity_params)
-          render json: activity, status: :created          
+          render json: activity, status: :created
         else
-          render json: { message: "unauthorized" }, status: :unauthorized
+          render json: { message: 'unauthorized' }, status: :unauthorized
         end
       rescue StandardError => e
         render json: { message: e.message }, status: :unprocessable_entity
@@ -35,21 +35,21 @@ module Api
           activity = Activity.find(params[:id])
           activity.update!(activity_params)
           activity.save!
-          render json: activity, status: :ok          
+          render json: activity, status: :ok
         else
-          render json: { message: "unauthorized" }, status: :unauthorized
+          render json: { message: 'unauthorized' }, status: :unauthorized
         end
       rescue StandardError => e
         render json: { message: e.message }, status: :unprocessable_entity
       end
-      
+
       def delete
         if current_user.role != 3
           activity = Activity.find(params[:id])
           activity.destroy!
-          render json: activity, status: :ok          
+          render json: activity, status: :ok
         else
-          render json: { message: "unauthorized" }, status: :unauthorized
+          render json: { message: 'unauthorized' }, status: :unauthorized
         end
       rescue StandardError => e
         render json: { message: e.message }, status: :bad_request
