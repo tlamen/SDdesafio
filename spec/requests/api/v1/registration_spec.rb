@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::Registrations', type: :request do
+RSpec.describe 'Api::V1::Registration', type: :request do
   let(:client) { create(:user) }
   let(:activity_1) { create(:activity) }
   let(:activity_2) { create(:activity) }
@@ -32,7 +32,7 @@ RSpec.describe 'Api::V1::Registrations', type: :request do
         }
       end
       
-      before { post 'api/v1/registrations/create', params: { registration: valid_params } }
+      before { post '/api/v1/registrations/create', params: { registration: valid_params } }
 
       it 'should return created status' do
         expect(response).to have_http_status(:created)
@@ -45,7 +45,7 @@ RSpec.describe 'Api::V1::Registrations', type: :request do
     end
 
     context 'when params are not valid' do
-      before { post 'api/v1/registrations/create', params: { registration: {user_id: client.id, activity_id: nil} } }
+      before { post '/api/v1/registrations/create', params: { registration: {user_id: client.id, activity_id: nil} } }
 
       it 'should return bad_request status' do
         expect(response).to have_http_status(:bad_request)
@@ -81,8 +81,8 @@ RSpec.describe 'Api::V1::Registrations', type: :request do
         delete "/api/v1/registrations/delete/#{registration.id}"
       end 
 
-      it 'should return not_found status' do
-        expect(response).to have_http_status(:not_found)
+      it 'should return bad_request status' do
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end

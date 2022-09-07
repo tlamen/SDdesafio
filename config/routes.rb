@@ -31,6 +31,12 @@ Rails.application.routes.draw do
         put '/update/:id', to: 'activities#update'
         delete '/delete/:id', to: 'activities#delete'
       end
+
+      scope 'registrations' do
+        get '/index', to: 'registration#index'
+        post '/create', to: 'registration#create'
+        delete '/delete/:id', to: 'registration#delete'
+      end
     end
   end
 end
