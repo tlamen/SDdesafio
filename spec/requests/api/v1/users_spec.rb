@@ -204,7 +204,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
   end
 
   describe 'PUT /update' do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, name: "old name") }
 
     context 'when user exists and params are valid' do
       before do
@@ -231,11 +231,14 @@ RSpec.describe 'Api::V1::Users', type: :request do
         user.destroy!
         put "/api/v1/users/update/#{user.id}", params: {
           user: { name: 'new name' }
+        }, headers: {
+          'X-User-Email': user.email,
+          'X-User-Token': user.authentication_token
         }
       end
 
-      it 'should return bad_request status' do
-        expect(response).to have_http_status(:bad_request)
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
       end
     end
 
@@ -263,8 +266,8 @@ RSpec.describe 'Api::V1::Users', type: :request do
         user.reload
       end
 
-      it 'should return unauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
+      it 'should return found status' do
+        expect(response).to have_http_status(:found)
       end
     end
   end
