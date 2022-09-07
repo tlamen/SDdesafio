@@ -3,7 +3,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      acts_as_token_authentication_handler_for User, only: %i[logout update]
+      acts_as_token_authentication_handler_for User, only: %i[logout update delete]
 
       def login
         user = User.find_by!(email: params[:email])
@@ -53,6 +53,14 @@ module Api
         render json: user, status: :ok
       rescue StandardError => e
         render json: { message: e.message }, status: :bad_request
+      end
+
+      def delete
+        user = User.find(params[:id])
+        user.destroy!
+        render json: user, status: :ok
+      rescue StandardError => e
+        render json: { message: e.message }, status: :not_found
       end
 
       private
